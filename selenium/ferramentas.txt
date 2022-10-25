@@ -1,0 +1,5 @@
+Instalar Selenium e webdriver=manager
+
+no terminal do windows>
+
+pip install selenium webdriver-manager
