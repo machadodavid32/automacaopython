@@ -4,6 +4,7 @@ Neste aqui teremos como saber como alguns campos estão habilitados ou não
 """
 
 from cgitb import enable
+from faulthandler import is_enabled
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
@@ -40,22 +41,31 @@ driver = iniciar_driver()
 driver.get('https://cursoautomacao.netlify.app/desafios.html')
 
 botao1 = driver.find_element(By.ID, 'btn1')  # Aqui estamos localizando um elemento ...
-botao2 = driver.find_element(By.CLASS_NAME, 'btn2 btn btn-dark')
-# botao3 = driver.find_element(By.CLASS_NAME, 'btn2 btn btn-warning')
+botao2 = driver.find_element(By.CLASS_NAME, 'btn2.btn.btn-dark')
+# OBSERVAÇÃO IMPORTANTE. NA LINHA ACIMA, ADICIONEU O PONTO EM ENTRE AS CLASSES..
+# ..btn2 btn btn-dark PARA QUE O SISTEMA RECONHEÇA 
+
+botao3 = driver.find_element(By.CLASS_NAME, 'btn2.btn.btn-warning')
 
 # Abaixo, vamos fazer uma condicional para verificar se os elementos foram encontrados
 
-if botao1 is enable():
+if botao1.is_enabled():
     print('Campo está habilitado')
-
 else:
     print('Campo desabilitado')
 
-if botao2 is enable():
+
+if botao2.is_enabled():
     print('Campo habilitado')
-
 else:
     print('Campo desabilitado')
+
+
+if botao3.is_enabled():
+    print('Campo habilitado')
+else:
+    print("Campo desabilitado")    
+
 
 input(' ')
 
