@@ -41,28 +41,37 @@ driver = iniciar_driver()
 # Navegar até o site
 driver.get('https://sp.olx.com.br/sao-paulo-e-regiao/autos-e-pecas/motos?q=yamaha%20mt03')
 
-# Carregar todos os elementos da tela movendo até o final da página e depois ao topo
-sleep(10)
-driver.execute_script('window.scrollTo(0, document.body.scrollHeight);') # descendo
-sleep(2)
-driver.execute_script('window.scrollTo(0, document.body.scrollTop);') # subindo
-sleep(2)
+while True:
 
-# Encontrando os titulos
-titulos = driver.find_element(By.XPATH, "//div[@class='sc-12rk7z2-7 kDVQFY']//h2")
+    # Carregar todos os elementos da tela movendo até o final da página e depois ao topo
+    sleep(10)
+    driver.execute_script('window.scrollTo(0, document.body.scrollHeight);') # descendo
+    sleep(2)
 
-# Encontrando os preços
-precos = driver.find_element(By.XPATH, "//span[@class='m7nrfa-0 eJCbzj sc-ifAKCX ANnoQ']")
 
-# Encontrando os links
-links = driver.find_element(By.XPATH, "//a[@data-lurker-detail='list_id']")
+    # Encontrando os titulos
+    titulos = driver.find_elements(By.XPATH, "//div[@class='sc-12rk7z2-7 kDVQFY']//h2")
 
-# Guardar isso em um arquivo .csv
-for titulo, preco, link in zip(titulos, precos, links):
-    with open('precos.csv', 'a', encoding='utf-8', newline='') as arquivo:
-        link_processado = link.get_attribute('href')
-        arquivo.write(f'{titulo.text};{preco.text};{link_processado}{os.linesep}')
-# os.linesep -> Quebra de linha para que as informações na tabela fiquem organizadas
+    # Encontrando os preços
+    precos = driver.find_elements(By.XPATH, "//span[@class='m7nrfa-0 eJCbzj sc-ifAKCX ANnoQ']")
+
+    # Encontrando os links
+    links = driver.find_elements(By.XPATH, "//a[@data-lurker-detail='list_id']")
+
+    # Guardar isso em um arquivo .csv
+    for titulo, preco, link in zip(titulos, precos, links):
+        with open('precos.csv', 'a', encoding='utf-8', newline='') as arquivo:
+            link_processado = link.get_attribute('href')
+            arquivo.write(f'{titulo.text};{preco.text};{link_processado}{os.linesep}')
+    # os.linesep -> Quebra de linha para que as informações na tabela fiquem organizadas
+    try:
+        botao_proxima_pagina = driver.find_element(
+            By.XPATH, '//span[text()='Mais anúncios'])
+        sleep(2)
+        botao_proxima_pagina.click()
+    except:
+        print('Chegamos na ultima pagina')
+        break    
 
 
 input('')
