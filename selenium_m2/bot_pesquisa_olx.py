@@ -65,8 +65,7 @@ while True:
             arquivo.write(f'{titulo.text};{preco.text};{link_processado}{os.linesep}')
     # os.linesep -> Quebra de linha para que as informações na tabela fiquem organizadas
     try:
-        botao_proxima_pagina = driver.find_element(
-            By.XPATH, '//span[text()='Mais anúncios'])
+        botao_proxima_pagina = driver.find_element(By.XPATH, "//span[text()='Próxima pagina']")
         sleep(2)
         botao_proxima_pagina.click()
     except:
