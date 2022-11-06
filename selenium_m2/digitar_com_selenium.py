@@ -1,14 +1,3 @@
-"""
-Projeto para buscas na olx
-Navegar até o site
-Encontrar os titulos
-Encontrar os preços
-Encontrar os links dos anuncios
-Guardar os dados em um arquivo.csv
-Fazer isso para todas as paginas existentes
-
-"""
-
 from fileinput import close
 from time import sleep
 from selenium import webdriver
@@ -39,38 +28,19 @@ def iniciar_driver():
 
 driver = iniciar_driver()
 # Navegar até o site
-driver.get('https://www.zapimoveis.com.br/')
-sleep(5)
-# Clicar em qual tipo de imovel
-qual_tipo = driver.find_element(By.XPATH, "//input[@label='Qual tipo?']")
-qual_tipo.click()
-sleep(2)
-clique_fora = driver.find_element(By.CLASS_NAME, 'new-hero__content-wrapper')
-clique_fora.click()
-onde = driver.find_element(By.XPATH, "//input[@label='Onde?']")
-onde.click()
+driver.get('https://cursoautomacao.netlify.app/')
+
+paragrafo = driver.find_element(By.XPATH, "//textarea[@placeholder='digite seu texto aqui']")
+# paragrafo.send_keys('exemplo de texto')  # Obs: Usando este recurso, o texto é colocado de forma imediata no site, e pode dar ..
+# ...problemas na automação. Então vamos fazer uma função
 
 def digitar_naturalmente(texto, elemento):
     for letra in texto:
         elemento.send_keys(letra)
         sleep(random.randint(1,5)/30)  # Aqui ele vai variar a digitação entre 1 e 5 segundos dividos por 30
 
-digitar_naturalmente('Bertioga', onde)
+digitar_naturalmente('teste', paragrafo)
+#digitar_naturalmente('olá, isso é somente um teste')
 
-driver.execute_script("window.scrollTo(0, 500);")
-sleep(3)
-
-#local = driver.find_element(By.XPATH, "//input[@id='new-l-checkbox-46']")
-local = driver.find_element(By.XPATH, "//label[@for='new-l-checkbox-28']")
-local.click() 
-sleep(2)
-buscar = driver.find_element(By.XPATH, "//button[@aria-label='Buscar']")
-buscar.click()
-sleep(2)
-filtros = driver.find_element(By.XPATH, "//input[@id='new-l-input-658']")
-filtros.click()
-digitar_naturalmente('70000', filtros)
-
-input(' ')
-
+input('')
 driver.close()
