@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select  # Serve para trabalhar com dropdown
 import os, random
+from digitar_com_selenium import digitar_naturalmente
 
 
 def iniciar_driver():
@@ -29,10 +30,6 @@ def iniciar_driver():
 
 # Passos para automação Facebook
 
-
-
-# Clicar em login
-# Encontrar e clicar no campo de postagem
 # Clicar dentro do campo de status
 # Digitar algo
 # Clicar em publicar
@@ -44,12 +41,34 @@ sleep(2)
 
 # Digitar email
 email = driver.find_element(By.ID, 'email')
-sleep(2)
+sleep(3)
+email.send_keys('davidinrock@hotmail.com')
 
 # Digitar senha
 senha = driver.find_element(By.ID, 'pass')
+sleep(2)
+senha.send_keys('davidaline')
 
+# Clicar em login
+entrar = driver.find_element(By.XPATH, "//button[@name='login']")
+entrar.click()
 
+# Encontrar e clicar no campo de postagem
+publicacao = driver.find_element(By.XPATH, "//div[@class='xi81zsa x1lkfr7t xkjl1po x1mzt3pk xh8yej3 x13faqbe']")
+publicacao.click()
+sleep(1)
+
+somente_eu = driver.find_element(By.XPATH, "//*[text()='Somente eu']")
+somente_eu.click()
+sleep(2)
+
+concluir = driver.find_element(By.XPATH, '//*[text()="Concluir"]')
+sleep(1)
+concluir.click()
+
+escrever = driver.find_element(By.XPATH, '//p[@class="x16tdsg8 x1mh8g0r xat24cr x11i5rnm xdj266r"]')
+sleep(3)
+digitar_naturalmente('oi, é só um teste', escrever)
 
 input('')
 driver.close()
