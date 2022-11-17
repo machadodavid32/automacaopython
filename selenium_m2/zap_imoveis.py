@@ -61,17 +61,36 @@ driver.execute_script("window.scrollTo(0, 500);")
 sleep(3)
 
 #local = driver.find_element(By.XPATH, "//input[@id='new-l-checkbox-46']")
-local = driver.find_element(By.XPATH, "//label[@for='new-l-checkbox-28']")
+local = driver.find_element(By.ID, "new-l-checkbox-30")
 local.click() 
 sleep(2)
 buscar = driver.find_element(By.XPATH, "//button[@aria-label='Buscar']")
 buscar.click()
 sleep(4)
-qual_tipo2 = driver.find_element(By.XPATH, "//input[@label='Qual tipo?']")
-qual_tipo2.click()
+
+# Segunda página
+todos_imoveis = driver.find_element(By.XPATH, "//input[@label='Qual tipo?']")
+todos_imoveis.click()
 sleep(2)
-tipos = driver.find_element(By.XPATH, "//input[@id='new-l-checkbox-104']")
+
+driver.execute_script("window.scrollTo(0, 300)")
+sleep(2)
+
+tipos = driver.find_element(By.ID, "new-l-checkbox-116")
 tipos.click()
+
+# Encontrar os titulos
+titulos = driver.find_elements(By.XPATH, "//img[@itemprop='image']")
+
+# Os preços
+precos = driver.find_elements(By.XPATH, "//div[@class='simple-card__prices simple-card__listing-prices']")
+
+# Encontrando os links -DESCOBRIR COMO FAZER
+#links = driver.find_elements(By.)
+
+
+#for titulo, preco, link in 
+
 
 input(' ')
 
