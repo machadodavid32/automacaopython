@@ -1,13 +1,12 @@
-from fileinput import close
-from time import sleep
+from selenium.common.exceptions import *
+from selenium.webdriver.support import expected_conditions as CondicaoExperada
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.select import Select  # Serve para trabalhar com dropdown
-import os, random
-
+from selenium.webdriver.chrome.options import Options
+from time import sleep
 
 
 def iniciar_driver():
@@ -25,60 +24,80 @@ def iniciar_driver():
     driver = webdriver.Chrome(service=ChromeService(
         ChromeDriverManager().install()), options=chrome_options)
 
-    return driver
+    wait = WebDriverWait(
+        driver,
+        10,
+        poll_frequency=1,
+        ignored_exceptions=[
+            NoSuchElementException,
+            ElementNotVisibleException,
+            ElementNotSelectableException,
+        ]
+    )
+    return driver, wait
 
 
-# Passos para automação Instagram
-# Abrir o site
-# Clicar para digitar usuario
-# Clicar para colocar a senha
-# Clicar em entrar
+driver, wait = iniciar_driver()
 
 
-# Digitar algo
-# Clicar em publicar
-
-driver = iniciar_driver()
-
+# Entrar no site do instagram
 driver.get('https://www.instagram.com/')
-sleep(2)
 
-# Digitar email
-email = driver.find_element(By.ID, 'email')
+# Clicar e digitar meu usuário
+campo_usuario = wait.until(CondicaoExperada.element_to_be_clickable((By.XPATH, 
+"//input[@name='username']")))
+campo_usuario.send_keys("david_machado_dp")
 sleep(3)
-email.send_keys('**********')
 
-# Digitar senha
-senha = driver.find_element(By.ID, 'pass')
-sleep(2)
-senha.send_keys('**********')
-
-# Clicar em login
-entrar = driver.find_element(By.XPATH, "//button[@name='login']")
-entrar.click()
-
-# Encontrar e clicar no campo de postagem
-publicacao = driver.find_element(By.XPATH, "//div[@class='xi81zsa x1lkfr7t xkjl1po x1mzt3pk xh8yej3 x13faqbe']")
-publicacao.click()
-sleep(1)
-
-# Clicar dentro do campo de "somente eu"
-somente_eu = driver.find_element(By.XPATH, "//*[text()='Somente eu']")
-somente_eu.click()
-sleep(2)
-
-# Clicar confirmar a escolha
-concluir = driver.find_element(By.XPATH, '//*[text()="Concluir"]')
-sleep(1)
-concluir.click()
-
-def digitacao_humana(texto, variavel):
-    for letra in texto:
-        variavel.send_keys(letra)
-        sleep(random.randint(1,5)/30)
-
-# Acima fiz um função para escrever de forma humana.
-escrever = driver.find_element(By.XPATH, '//p[@class="x16tdsg8 x1mh8g0r xat24cr x11i5rnm xdj266r"]')
+# Clicar e digitar minha senha 
+campo_senha = wait.until(CondicaoExperada.element_to_be_clickable((By.XPATH,
+ "//input[@name='password']")))
+campo_senha.send_keys('#Ns8493ni')
 sleep(3)
-digitacao_humana('oi, é somente um teste', escrever)
+
+# Clicar no campo entrar
+botao_entrar = wait.until(CondicaoExperada.element_to_be_clickable((By.XPATH, 
+"//div[text()='Entrar']")))
+botao_entrar.click()
 sleep(2)
+
+# Segunda tela de loguin
+campo_informacao_login = wait.until(CondicaoExperada.element_to_be_clickable((By.XPATH,
+ "//*[text()='Agora não']")))
+sleep(2)
+campo_informacao_login.click()
+sleep(2)
+
+# Pesquisar a pagina
+#campo_pesquisa = wait.until(CondicaoExperada.visibility_of_any_elements_located((By.XPATH,
+# "//*[text()='Pesquisa']")))
+#campo_pesquisa[0].click
+#sleep(1)
+#campo_pesquisa.send_keys('devaprender')
+
+# Navegar até a página alvo
+while True:  # Para rodar o codigo de forma infinita
+    driver.get('https://www.instagram.com/devaprender/')
+    sleep(2)
+
+    # Clicar na última  postagem
+    postagens = wait.until(CondicaoExperada.visibility_of_any_elements_located((By.XPATH, 
+    "//div[@class='_aagw']")))  # Pois foram encontrados multiplos elementos, ...
+    # e como queremos o primeiro, deve funcionar.
+    sleep(2)
+    postagens[0].click()
+    sleep(2)
+
+    elementos_postagem = wait.until(CondicaoExperada.visibility_of_any_elements_located((By.XPATH,
+    "//div[@class='_abm0 _abl_']")))
+
+    if len(elementos_postagem) == 4:
+        elementos_postagem[0].click()
+    else:
+        print("Postagem já foi curtida")
+        sleep(86400)  # Aqui é a pausa de 24 horas
+
+
+#  Verificar se postagem foi curtida, caso não tenha sido, clicar curtir, caso já tenha sido, aguardar 24hrs
+input('')
+driver.close()
