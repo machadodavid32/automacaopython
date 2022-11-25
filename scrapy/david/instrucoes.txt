@@ -1,0 +1,13 @@
+Para começar a aprender scrapy, criamos um ambiente virtual com:
+
+python -m venv david  - realizado num terminal aberto na pasta scrapy
+
+E para ativar o ambiente criado:
+
+ david\scripts\activate   - também no terminal
+
+ E depois instalar o scrapy com:
+
+ pip install scrapy
+
+
